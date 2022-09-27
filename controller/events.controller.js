@@ -36,8 +36,8 @@ const getOneEvent = (req, res, next) => {
         }
         EventModel
             .findById(id)
-            .then((Event) => {
-                res.status(200).json(Event);
+            .then((event) => {
+                res.status(200).json(event);
             })
             .catch(next);
     } catch (err) {
@@ -85,7 +85,7 @@ const updateOneEvent = (req, res, next) => {
             .catch(next);
     }
     catch (err) {
-        res.status(400).json({ ErrorMessage: err.Message });
+        res.status(400).json({ ErrorMessage: err.message });
     }
 }
 

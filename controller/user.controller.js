@@ -1,7 +1,7 @@
 const UserModel = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const { signJwt } = require('../utils/jwt.util');
-let SALT = 10
+const SALT = 10
 
 
 const createUser = (req, res, next) => {
@@ -42,25 +42,6 @@ const findProfile = (req, res, next) => {
         })
         .catch(next);
 };
-// router.post("/login", (req, res, next) => {
-//     const { username, password } = req.body
-//     let user
-//     userModel.findOne({ username })
-//         .then((userDB) => {
-//             user = userDB
-//             return bcrypt.compare(password, user.password)
-//         })
-//         .then((isPassword) => {
-//             console.log(isPassword)
-//             if (isPassword) {
-//                 req.session.user = user;
-//                 res.render("auth/profile", req.session.user);
-//             } else {
-//                 res.render('auth/login', { message: 'Usuario o contraseña incorrecta!' });
-//             }
-//         })
-//         .catch((err) => next(err));
-// })
 
 module.exports = { createUser, findProfile }
 
