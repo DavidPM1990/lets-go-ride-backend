@@ -49,9 +49,10 @@ const getOneEvent = (req, res, next) => {
     }
 }
 
-const findAllEvents = (req, res, next) => {
+const findAllEvents = (_req, res, next) => {
     EventModel
         .find()
+        .populate('author')
         .then(events => {
             console.log(events)
             res.json(events)
