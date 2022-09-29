@@ -9,7 +9,9 @@ const createEvent = (req, res, next) => {
         eventLevel,
         freestyle,
         apresSki,
-        place
+        place,
+        startDate,
+        endDate
     } = req.body;
     console.log('Soy req.body', req.body);
     EventModel
@@ -20,10 +22,12 @@ const createEvent = (req, res, next) => {
             eventLevel,
             freestyle,
             apresSki,
-            place
+            place,
+            startDate,
+            endDate
         })
-        .then(() => {
-            res.sendStatus(201);
+        .then((event) => {
+            res.status(201).json(event);
         })
         .catch(next);
 }

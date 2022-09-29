@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET
 
-const signJwt = (idUser, email) => {
-    return jwt.sign({ email }, secret, { expiresIn: '7d', subject: idUser });
+const signJwt = (idUser, username) => {
+    return jwt.sign({ username }, secret, { expiresIn: '7d', subject: idUser });
 };
 
 const verifyJwt = (token) => {
