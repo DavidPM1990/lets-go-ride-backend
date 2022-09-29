@@ -1,7 +1,7 @@
 const UserModel = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const { signJwt } = require('../utils/jwt.util');
-const SALT = 10
+const SALT = +process.env.SALT
 
 
 const createUser = (req, res, next) => {
@@ -20,7 +20,7 @@ const createUser = (req, res, next) => {
             res.sendStatus(201);
         })
         .catch((err) => {
-            if (err.message === 'Email ya en uso') {
+            if (err.message === 'Email in use') {
                 res.status(400).json({ errorMessage: err.message });
                 return;
             }
@@ -37,12 +37,29 @@ const findProfile = (req, res, next) => {
             if (user && bcrypt.compareSync(password, user.password)) {
                 res.status(200).json({ token: signJwt(user._id.toString(), user.username) });
             } else {
-                res.status(400).json({ errorMessage: 'username o contraseña no valida.' });
+                res.status(400).json({ errorMessage: 'Username or password not valid.' });
             }
         })
         .catch(next);
 };
 
-module.exports = { createUser, findProfile }
+
+const GetUser = (req, res, next) => {
+    console.log(req)
+    if (req.user) {
+        UserModel.findById(req.user._id).then((user) => {
+            if (user) {
+                res.status(200).json(user)
+            } else {
+                res.sendStatus(404);
+            }
+        })
+    } else {
+        res.sendStatus(401);
+    }
+}
+
+
+module.exports = { createUser, findProfile, GetUser }
 
 
