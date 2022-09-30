@@ -1,8 +1,12 @@
 const router = require("express").Router();
+const {
+    GetUser
+} = require("../controller/user.controller")
 
-router.get("/", (req, res, next) => {
-    res.json("All good in profile");
-});
+
+router.get("/", GetUser)
+
+
 
 
 module.exports = router;
