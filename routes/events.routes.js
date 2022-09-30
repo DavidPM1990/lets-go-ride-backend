@@ -4,25 +4,29 @@ const {
     findAllEvents,
     updateOneEvent,
     getOneEvent,
-    deleteOneEvent
+    deleteOneEvent,
+    // addEventIdToUser
 } = require("../controller/events.controller")
 
 // GET
 
 router.get("/", findAllEvents)
-router.get("/:id", getOneEvent)
+
+router.get("/getOneEvent/:id", getOneEvent)
 
 // POST
 
 router.post("/create", createEvent)
 
+// router.post("/addEvent/:id", addEventIdToUser)
+
 // PUT
 
-router.put("/:id", updateOneEvent)
+router.put("/update/:id", updateOneEvent)
 
 // DELETE
 
-router.delete("/:id", deleteOneEvent)
+router.delete("/deleteEvent/:id", deleteOneEvent)
 
 
 module.exports = router;

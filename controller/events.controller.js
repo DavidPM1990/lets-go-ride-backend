@@ -1,5 +1,6 @@
 const EventModel = require('../models/Event.model');
 const { isValidObjectId } = require('mongoose');
+const UserModel = require('../models/User.model');
 
 const createEvent = (req, res, next) => {
     const {
@@ -35,11 +36,14 @@ const createEvent = (req, res, next) => {
 const getOneEvent = (req, res, next) => {
     try {
         const { id } = req.params;
+        console.log(id)
         if (!isValidObjectId(id)) {
             throw new Error('Error: Invalid mongo ID');
         }
+
         EventModel
             .findById(id)
+            .populate('author')
             .then((event) => {
                 res.status(200).json(event);
             })
@@ -110,18 +114,20 @@ const deleteOneEvent = (req, res, next) => {
         res.status(400).json({ errorMessage: err.message })
     }
 
+
 }
+// const addEventIdToUser = (req, res, next) => {
+//     const { id } = req.params
+//     console.log(id)
+//     console.log('SOY EL REQ', req)
+
+// }
 
 module.exports = {
     createEvent,
     findAllEvents,
     updateOneEvent,
     getOneEvent,
-    deleteOneEvent
+    deleteOneEvent,
+    // addEventIdToUser
 }
-
-
-
-
-
-
