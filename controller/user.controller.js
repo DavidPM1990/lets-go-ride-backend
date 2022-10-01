@@ -45,7 +45,6 @@ const findProfile = (req, res, next) => {
 
 
 const GetUser = (req, res, next) => {
-    console.log(req)
     if (req.user) {
         UserModel.findById(req.user._id).then((user) => {
             if (user) {
