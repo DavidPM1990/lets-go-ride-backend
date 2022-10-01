@@ -36,7 +36,6 @@ const createEvent = (req, res, next) => {
 const getOneEvent = (req, res, next) => {
     try {
         const { id } = req.params;
-        console.log(id)
         if (!isValidObjectId(id)) {
             throw new Error('Error: Invalid mongo ID');
         }
@@ -44,6 +43,7 @@ const getOneEvent = (req, res, next) => {
         EventModel
             .findById(id)
             .populate('author')
+            // .populate('comments', 'body author')              //  PORQUE EXPLOTAAAA SI METO ESTE POPULATE
             .then((event) => {
                 res.status(200).json(event);
             })
