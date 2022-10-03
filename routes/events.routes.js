@@ -5,6 +5,7 @@ const {
     updateOneEvent,
     getOneEvent,
     deleteOneEvent,
+    updateUserList
     // addEventIdToUser
 } = require("../controller/events.controller")
 
@@ -23,6 +24,8 @@ router.post("/create", createEvent)
 // PUT
 
 router.put("/update/:id", updateOneEvent)
+
+router.put("/updateList/:eventId", updateUserList)
 
 // DELETE
 
