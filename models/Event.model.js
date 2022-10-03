@@ -13,7 +13,7 @@ const EventsSchema = new Schema(
         freestyle: { type: Boolean, required: true },
         apresSki: { type: Boolean, required: true },
         place: { type: String, enum: skiStations, required: true },
-        comments: [{ type: Schema.Types.ObjectId, ref: 'comments' }],
+        comments: [{ type: Schema.Types.ObjectId, ref: 'Comments' }],
         rating: { type: Number },
         usersList: [{ type: Schema.Types.ObjectId, ref: "User" }]
     },

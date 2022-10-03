@@ -43,7 +43,12 @@ const getOneEvent = (req, res, next) => {
         EventModel
             .findById(id)
             .populate('author')
-            // .populate('comments')              //  PORQUE EXPLOTAAAA SI METO ESTE POPULATE
+            .populate({
+                path: 'comments',
+                populate: [
+                    { path: 'author' }
+                ]
+            })
             .then((event) => {
                 res.status(200).json(event);
             })
