@@ -43,7 +43,7 @@ const getOneEvent = (req, res, next) => {
         EventModel
             .findById(id)
             .populate('author')
-            // .populate('comments', 'body author')              //  PORQUE EXPLOTAAAA SI METO ESTE POPULATE
+            // .populate('comments')              //  PORQUE EXPLOTAAAA SI METO ESTE POPULATE
             .then((event) => {
                 res.status(200).json(event);
             })

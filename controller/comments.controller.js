@@ -16,8 +16,6 @@ const createComment = (req, res, next) => {      // Preguntar como hacer para de
 
     const { body, author, eventId } = req.body
 
-
-
     CommentModel
         .create({ body, author })
         .then((newComment) => {

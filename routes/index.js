@@ -11,4 +11,3 @@ module.exports = (app) => {
 
     app.use('/comment', require('./comments.routes'))
 }
-
