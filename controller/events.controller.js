@@ -121,6 +121,52 @@ const deleteOneEvent = (req, res, next) => {
 
 
 }
+
+const updateUserList = (req, res, next) => {
+    const { eventId } = req.params
+    const { userId } = req.body
+    let event
+    console.log("EVENT ID ---->", eventId)
+    console.log("USER ID ---->", userId)
+
+    EventModel.findById(eventId)
+        .then((eventFound) => {
+            event = eventFound
+            if (!event.usersList.includes(userId)) {
+                EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { usersList: userId } }, { new: true })
+                    .then((event) => {
+                        console.log("soy el evento actualizado", event)
+                        res.json(event)
+                    })
+                    .catch((err) => next(err));
+            }
+            else {
+                EventModel.findById(eventId)
+                    .then((event) => {
+                        for (let i = 0; i < event.usersList.length; i++) {
+                            console.log("He entrado en el bucle")
+                            console.log('Soy cada elemento del array', event.usersList[i])
+                            if (event.usersList[i] === userId) {
+                                console.log("Lo voy a sacar del array")
+                                EventModel.findByIdAndUpdate({ _id: eventId }, { $pullAll: { usersList: userId } }, { new: true })
+                            }
+                        }
+                    })
+
+                console.log("Lo he sacado del array")
+            }
+        })
+
+
+    // EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { usersList: userId } }, { new: true })
+    //     .then((event) => {
+    //         console.log("soy el evento actualizado", event)
+    //         res.json(event)
+    //     })
+    //     .catch((err) => next(err));
+}
+
+
 // const addEventIdToUser = (req, res, next) => {
 //     const { id } = req.params
 //     console.log(id)
@@ -134,5 +180,6 @@ module.exports = {
     updateOneEvent,
     getOneEvent,
     deleteOneEvent,
+    updateUserList
     // addEventIdToUser
 }
