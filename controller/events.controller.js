@@ -122,7 +122,7 @@ const deleteOneEvent = (req, res, next) => {
 
 }
 
-const updateUserList = (req, res, next) => {
+const updateLists = (req, res, next) => {
     const { eventId } = req.params
     const { userId } = req.body
     let event
@@ -133,7 +133,8 @@ const updateUserList = (req, res, next) => {
         .then((eventFound) => {
             event = eventFound
             if (!event.usersList.includes(userId)) {
-                EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { usersList: userId } }, { new: true })
+                console.log("NO ESTA")
+                EventModel.findByIdAndUpdate({ _id: eventId }, { $addToSet: { usersList: userId } }, { new: true })
                     .then((event) => {
                         console.log("soy el evento actualizado", event)
                         res.json(event)
@@ -141,38 +142,43 @@ const updateUserList = (req, res, next) => {
                     .catch((err) => next(err));
             }
             else {
-                EventModel.findById(eventId)
-                    .then((event) => {
-                        for (let i = 0; i < event.usersList.length; i++) {
-                            console.log("He entrado en el bucle")
-                            console.log('Soy cada elemento del array', event.usersList[i])
-                            if (event.usersList[i] === userId) {
-                                console.log("Lo voy a sacar del array")
-                                EventModel.findByIdAndUpdate({ _id: eventId }, { $pullAll: { usersList: userId } }, { new: true })
-                            }
-                        }
+                EventModel
+                    .findByIdAndUpdate({ _id: eventId }, { $pull: { usersList: userId } }, { new: true })
+                    .then((eventUpdated) => {
+                        res.json(eventUpdated)
                     })
-
-                console.log("Lo he sacado del array")
+                    .then((eventUpdated) => {
+                        res.json(eventUpdated)
+                    })
             }
         })
 
+    let user
+    console.log("EVENT ID ---->", eventId)
+    console.log("USER ID ---->", userId)
 
-    // EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { usersList: userId } }, { new: true })
-    //     .then((event) => {
-    //         console.log("soy el evento actualizado", event)
-    //         res.json(event)
-    //     })
-    //     .catch((err) => next(err));
+    UserModel.findById(userId)
+        .then((userFound) => {
+            user = userFound
+            if (!user.eventsJoined.includes(eventId)) {
+                console.log("NO ESTA EN USER")
+                UserModel.findByIdAndUpdate({ _id: userId }, { $addToSet: { eventsJoined: eventId } }, { new: true })
+                    .then((user) => {
+                        console.log("soy el user actualizado", user)
+                        res.json(user)
+                    })
+                    .catch((err) => next(err));
+            }
+            else {
+                UserModel
+                    .findByIdAndUpdate({ _id: userId }, { $pull: { eventsJoined: eventId } }, { new: true })
+                    .then((userUpdated) => {
+                        res.json(userUpdated)
+                    })
+            }
+        })
 }
 
-
-// const addEventIdToUser = (req, res, next) => {
-//     const { id } = req.params
-//     console.log(id)
-//     console.log('SOY EL REQ', req)
-
-// }
 
 module.exports = {
     createEvent,
@@ -180,6 +186,5 @@ module.exports = {
     updateOneEvent,
     getOneEvent,
     deleteOneEvent,
-    updateUserList
-    // addEventIdToUser
+    updateLists
 }
