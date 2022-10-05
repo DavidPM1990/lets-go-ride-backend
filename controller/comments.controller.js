@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const CommentModel = require('../models/Comments.model');
 const EventModel = require('../models/Event.model');
 
@@ -29,5 +30,22 @@ const createComment = (req, res, next) => {
 }
 
 
+const deleteComment = (req, res, next) => {
+    try {
+        const { id } = req.params
+        if (!isValidObjectId(id)) {
+            throw new Error('Error: Invalid mongo ID')
+        }
+        CommentModel
+            .findByIdAndDelete(id)
+            .then(() => {
+                res.sendStatus(204)
+            })
+            .catch(next)
+    } catch (err) {
+        res.status(400).json({ errorMessage: err.message })
+    }
+}
 
-module.exports = { findAllComments, createComment }
+
+module.exports = { findAllComments, createComment, deleteComment }
