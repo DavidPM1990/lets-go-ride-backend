@@ -46,13 +46,15 @@ const findProfile = (req, res, next) => {
 
 const GetUser = (req, res, next) => {
     if (req.user) {
-        UserModel.findById(req.user._id).then((user) => {
-            if (user) {
-                res.status(200).json(user)
-            } else {
-                res.sendStatus(404);
-            }
-        })
+        UserModel.findById(req.user._id)
+            .populate('eventsJoined')
+            .then((user) => {
+                if (user) {
+                    res.status(200).json(user)
+                } else {
+                    res.sendStatus(404);
+                }
+            })
     } else {
         res.sendStatus(401);
     }
