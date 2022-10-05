@@ -43,6 +43,7 @@ const getOneEvent = (req, res, next) => {
         EventModel
             .findById(id)
             .populate('author')
+            .populate('usersList')
             .populate({
                 path: 'comments',
                 populate: [
@@ -61,6 +62,7 @@ const getOneEvent = (req, res, next) => {
 const findAllEvents = (_req, res, next) => {
     EventModel
         .find()
+        .sort({ createdAt: -1 })
         .populate('author')
         .then(events => {
             console.log(events)

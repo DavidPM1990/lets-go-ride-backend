@@ -6,6 +6,7 @@ const EventModel = require('../models/Event.model');
 const findAllComments = (_req, res, next) => {
     CommentModel
         .find()
+        .sort({ createdAt: -1 })
         .populate('author')
         .then((comments) => {
             res.json(comments)
