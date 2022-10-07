@@ -6,8 +6,8 @@ const EventModel = require('../models/Event.model');
 const findAllComments = (_req, res, next) => {
     CommentModel
         .find()
-        .sort({ createdAt: -1 })
         .populate('author')
+        .sort({ createdAt: 1 })
         .then((comments) => {
             res.json(comments)
         })
@@ -22,7 +22,7 @@ const createComment = (req, res, next) => {
         .create({ body, author })
         .then((newComment) => {
             console.log("soy el nuevo comentarioooooooooooo", newComment)
-            return EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { comments: newComment._id } }, { new: true });
+            return EventModel.findByIdAndUpdate({ _id: eventId }, { $push: { comments: { $each: [newComment._id], $position: 0 } } }, { new: true });
         })
         .then((event) => {
             res.json(event)
