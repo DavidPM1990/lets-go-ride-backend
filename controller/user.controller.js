@@ -48,6 +48,12 @@ const GetUser = (req, res, next) => {
     if (req.user) {
         UserModel.findById(req.user._id)
             .populate('eventsJoined')
+            .populate({
+                path: 'eventsJoined',
+                populate: [
+                    { path: 'author' }
+                ]
+            })
             .then((user) => {
                 if (user) {
                     res.status(200).json(user)
