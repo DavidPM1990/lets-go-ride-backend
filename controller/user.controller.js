@@ -47,7 +47,6 @@ const findProfile = (req, res, next) => {
 const GetUser = (req, res, next) => {
     if (req.user) {
         UserModel.findById(req.user._id)
-            .populate('eventsJoined')
             .populate({
                 path: 'eventsJoined',
                 populate: [
